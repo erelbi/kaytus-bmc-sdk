@@ -18,15 +18,16 @@ from .exceptions import (
     KaytusHTTPError,
     KaytusNotFoundError,
 )
-from .modules.system   import SystemModule
-from .modules.network  import NetworkModule
-from .modules.snmp     import SnmpModule
-from .modules.syslog   import SyslogModule
-from .modules.logs     import LogsModule
-from .modules.accounts import AccountsModule
-from .modules.bios     import BiosModule
-from .modules.firmware import FirmwareModule
-from .modules.hardware import HardwareModule
+from .modules.system       import SystemModule
+from .modules.network      import NetworkModule
+from .modules.snmp         import SnmpModule
+from .modules.syslog       import SyslogModule
+from .modules.logs         import LogsModule
+from .modules.accounts     import AccountsModule
+from .modules.bios         import BiosModule
+from .modules.firmware     import FirmwareModule
+from .modules.hardware     import HardwareModule
+from .modules.virtualmedia import VirtualMediaModule
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -66,15 +67,16 @@ class KaytusClient:
 
         self._login()
 
-        self.system   = SystemModule(self)
-        self.network  = NetworkModule(self)
-        self.snmp     = SnmpModule(self)
-        self.syslog   = SyslogModule(self)
-        self.logs     = LogsModule(self)
-        self.accounts = AccountsModule(self)
-        self.bios     = BiosModule(self)
-        self.firmware = FirmwareModule(self)
-        self.hardware = HardwareModule(self)
+        self.system       = SystemModule(self)
+        self.network      = NetworkModule(self)
+        self.snmp         = SnmpModule(self)
+        self.syslog       = SyslogModule(self)
+        self.logs         = LogsModule(self)
+        self.accounts     = AccountsModule(self)
+        self.bios         = BiosModule(self)
+        self.firmware     = FirmwareModule(self)
+        self.hardware     = HardwareModule(self)
+        self.virtualmedia = VirtualMediaModule(self)
 
     # ── Public HTTP helpers ───────────────────────────────
 

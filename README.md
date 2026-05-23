@@ -160,6 +160,24 @@ bmc.hardware.pcie_devices()     # All PCIe devices
 bmc.hardware.boards()           # Chassis boards / FRU data
 ```
 
+### `bmc.virtualmedia`
+
+> Requires: `pip install 'kaytus-bmc-sdk[virtualmedia]'`  (or `pip install websockets>=14`)
+
+```python
+# One-shot: set boot source, reboot, and stream ISO until boot completes
+bmc.virtualmedia.boot_cd("/path/to/proxmox-ve_9.2-1.iso")
+
+# Step-by-step:
+bmc.virtualmedia.set_boot_cd()              # set boot override → CD (Once, UEFI)
+bmc.system.force_reboot()
+bmc.virtualmedia.stream("/path/to/file.iso") # blocks until BMC disconnects
+
+# Options:
+bmc.virtualmedia.set_boot_cd(enabled="Continuous", mode="Legacy")
+bmc.virtualmedia.boot_cd("/path/to/file.iso", boot_mode="Legacy", graceful=True)
+```
+
 ### `bmc.bios`
 
 ```python
@@ -228,6 +246,11 @@ MIT
 Special thanks to **Muhammed Musa Güngör** — our Infrastructure Hero —
 for providing hardware access, testing support, and keeping the servers running
 throughout the development and validation of this SDK.
+
+<img src="https://raw.githubusercontent.com/erelbi/kaytus-bmc-sdk/main/docs/serdar_sarikaya.jpg" width="100" style="border-radius:50%" />
+
+Special thanks to **Serdar Sarıkaya** for valuable support and contributions
+during the development and testing of this SDK.
 
 ---
 

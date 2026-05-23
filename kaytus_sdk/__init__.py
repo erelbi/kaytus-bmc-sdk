@@ -24,15 +24,16 @@ Bulk operations:
     print(bulk_summary(results))
 
 Modules:
-    bmc.system   — overview, power, boot, thermal, fans, PSU
-    bmc.network  — hostname, DNS, static IP, DHCP, NTP, protocols
-    bmc.snmp     — V1/V2C/V3 config, trap servers
-    bmc.syslog   — syslog server slots
-    bmc.logs     — SEL, IDL, AuditLog, Alarms
-    bmc.accounts — user CRUD
-    bmc.bios     — attributes, reset, password, export
-    bmc.firmware — inventory, BMC/BIOS version, TFTP update
-    bmc.hardware — CPU, memory DIMMs, NIC adapters, PCIe, boards/FRU
+    bmc.system        — overview, power, boot, thermal, fans, PSU
+    bmc.network       — hostname, DNS, static IP, DHCP, NTP, protocols
+    bmc.snmp          — V1/V2C/V3 config, trap servers
+    bmc.syslog        — syslog server slots
+    bmc.logs          — SEL, IDL, AuditLog, Alarms
+    bmc.accounts      — user CRUD
+    bmc.bios          — attributes, reset, password, export
+    bmc.firmware      — inventory, BMC/BIOS version, TFTP update
+    bmc.hardware      — CPU, memory DIMMs, NIC adapters, PCIe, boards/FRU
+    bmc.virtualmedia  — ISO boot via VMM WebSocket (requires websockets>=14)
 """
 from .client import KaytusClient
 from .exceptions import (
