@@ -226,6 +226,8 @@ MIT
 
 ## Acknowledgements
 
+<img src="https://raw.githubusercontent.com/erelbi/kaytus-bmc-sdk/main/docs/muhammed_musa_gungor.jpg" width="100" style="border-radius:50%" />
+
 Special thanks to **Muhammed Musa Güngör** — our Infrastructure Hero —
 for providing hardware access, testing support, and keeping the servers running
 throughout the development and validation of this SDK.

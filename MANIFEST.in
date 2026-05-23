@@ -2,3 +2,4 @@ include README.md
 include LICENSE
 include CHANGELOG.md
 recursive-include kaytus_sdk *.py
+recursive-include docs *
