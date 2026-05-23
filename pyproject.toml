@@ -34,10 +34,10 @@ name = "Turksat Infrastructure Team"
 email = "bilselergun@gmail.com"
 
 [project.urls]
-Homepage = "https://gitlab.com/erelbi/kaytus-bmc-sdk"
-Repository = "https://gitlab.com/erelbi/kaytus-bmc-sdk"
-"Bug Tracker" = "https://gitlab.com/erelbi/kaytus-bmc-sdk/-/issues"
-Changelog = "https://gitlab.com/erelbi/kaytus-bmc-sdk/-/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/erelbi/kaytus-bmc-sdk"
+Repository = "https://github.com/erelbi/kaytus-bmc-sdk"
+"Bug Tracker" = "https://github.com/erelbi/kaytus-bmc-sdk/issues"
+Changelog = "https://github.com/erelbi/kaytus-bmc-sdk/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["."]
