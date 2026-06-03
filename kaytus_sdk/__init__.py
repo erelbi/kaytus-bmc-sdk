@@ -24,15 +24,18 @@ Bulk operations:
     print(bulk_summary(results))
 
 Modules:
-    bmc.system        — overview, power, boot, thermal, fans, PSU
-    bmc.network       — hostname, DNS, static IP, DHCP, NTP, protocols
+    bmc.system        — overview, power, boot, thermal, fans, PSU, BMC reset, POST codes
+    bmc.network       — hostname, DNS, static IP, DHCP, NTP (6 servers), LLDP, protocols
     bmc.snmp          — V1/V2C/V3 config, trap servers
     bmc.syslog        — syslog server slots
     bmc.logs          — SEL, IDL, AuditLog, Alarms
-    bmc.accounts      — user CRUD
+    bmc.accounts      — user CRUD, lockout policy, password policy, LDAP
     bmc.bios          — attributes, reset, password, export
-    bmc.firmware      — inventory, BMC/BIOS version, TFTP update
+    bmc.firmware      — inventory, BMC/BIOS version, TFTP/HTTP push update
     bmc.hardware      — CPU, memory DIMMs, NIC adapters, PCIe, boards/FRU
+    bmc.drives        — disk/SSD inventory (temperature, SMART, capacity)
+    bmc.smtp          — email alert configuration (4 recipient slots)
+    bmc.events        — Redfish EventService subscriptions
     bmc.virtualmedia  — ISO boot via VMM WebSocket (requires websockets>=14)
 """
 from .client import KaytusClient
@@ -59,4 +62,4 @@ __all__ = [
     "bulk_summary",
 ]
 
-__version__ = "2.0.2"
+__version__ = "2.2.0"

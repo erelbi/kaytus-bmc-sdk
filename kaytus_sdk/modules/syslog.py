@@ -90,7 +90,7 @@ class SyslogModule:
         body["ServiceSyslogTag"]     = tag
         body["TransmissionProtocol"] = protocol
         body["AlarmSeverity"]        = severity
-        body["SyslogServers"]        = [slot]
+        body["SyslogServers"]        = servers
 
         return self._c.patch(_SYSLOG, body, etag=etag)
 
@@ -105,7 +105,7 @@ class SyslogModule:
         slot = next((s for s in servers if s.get("MemberId") == index), None)
         if slot:
             slot["Enabled"] = "Disable"
-            body["SyslogServers"] = [slot]
+            body["SyslogServers"] = servers
         return self._c.patch(_SYSLOG, body, etag=etag)
 
     def test(self) -> dict:

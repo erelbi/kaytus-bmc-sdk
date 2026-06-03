@@ -113,3 +113,47 @@ class NetworkModule:
 
     def set_ipmi_enabled(self, enabled: bool) -> dict:
         return self._c.patch(_PROTO, {"IPMI": {"ProtocolEnabled": enabled}})
+
+    def set_ssh_enabled(self, enabled: bool) -> dict:
+        return self._c.patch(_PROTO, {"SSH": {"ProtocolEnabled": enabled}})
+
+    def set_kvm_enabled(self, enabled: bool) -> dict:
+        return self._c.patch(_PROTO, {"KVMIP": {"ProtocolEnabled": enabled}})
+
+    # ── NTP extended ─────────────────────────────────────
+
+    def set_ntp_servers(
+        self,
+        servers: list[str],
+        *,
+        enabled: bool = True,
+        interval: int = 60,
+    ) -> dict:
+        """
+        Configure up to 6 NTP servers.
+        servers: list of NTP server addresses (index 0=primary, 1=secondary, …)
+        """
+        s = (servers + [""] * 6)[:6]
+        return self._c.patch(_NTP, {
+            "ServiceEnabled":      enabled,
+            "NtpServerType":       "Static",
+            "PrimaryNtpServer":    s[0],
+            "SecondaryNtpServer":  s[1],
+            "ThirdNtpServer":      s[2],
+            "FourthNtpServer":     s[3],
+            "FifthNtpServer":      s[4],
+            "SixthNtpServer":      s[5],
+            "PollingInterval":     interval,
+        })
+
+    # ── LLDP ─────────────────────────────────────────────
+
+    _LLDP = "/redfish/v1/Managers/1/LldpService"
+
+    def lldp_info(self) -> dict:
+        """Return LLDP service status."""
+        return self._c.get(self._LLDP)
+
+    def set_lldp_enabled(self, enabled: bool) -> dict:
+        """Enable or disable LLDP neighbour discovery."""
+        return self._c.patch(self._LLDP, {"LldpEnabled": enabled})

@@ -61,6 +61,47 @@ class FirmwareModule:
             f"{_UPDATE_SVC}/Actions/UpdateService.SimpleUpdate", payload
         )
 
+    def http_push_update(self, local_path: str, targets: list[str] | None = None) -> dict:
+        """
+        Initiate firmware update by uploading a local image file via HTTP multipart.
+        local_path: path to the firmware image file (.bin / .tar / .hpm)
+        targets   : list of FirmwareInventory URIs (optional)
+        """
+        import os
+        import requests as _requests
+
+        if not os.path.exists(local_path):
+            raise FileNotFoundError(f"Firmware image not found: {local_path}")
+
+        push_uri = self._c.get(_UPDATE_SVC).get("HttpPushUri", "")
+        if not push_uri:
+            raise RuntimeError("BMC does not advertise an HttpPushUri")
+
+        url = f"{self._c.base_url}{push_uri}"
+        token = self._c._session.headers.get("X-Auth-Token", "")
+        headers = {"X-Auth-Token": token}
+
+        with open(local_path, "rb") as f:
+            resp = _requests.post(
+                url,
+                headers=headers,
+                files={"UpdateFile": (os.path.basename(local_path), f, "application/octet-stream")},
+                verify=False,
+                timeout=300,
+            )
+        return self._c._handle(resp, "POST", push_uri)
+
+    def tasks(self) -> list[dict]:
+        """Return all firmware-related tasks."""
+        col = self._c.get("/redfish/v1/TaskService/Tasks")
+        result = []
+        for m in col.get("Members", []):
+            try:
+                result.append(self._c.get(m["@odata.id"]))
+            except Exception:
+                pass
+        return result
+
     def update_status(self, task_id: str) -> dict:
         """Poll firmware update task status."""
         return self._c.get(f"/redfish/v1/TaskService/Tasks/{task_id}")

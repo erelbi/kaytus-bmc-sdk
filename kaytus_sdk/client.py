@@ -27,6 +27,9 @@ from .modules.accounts     import AccountsModule
 from .modules.bios         import BiosModule
 from .modules.firmware     import FirmwareModule
 from .modules.hardware     import HardwareModule
+from .modules.drives       import DrivesModule
+from .modules.smtp         import SmtpModule
+from .modules.events       import EventsModule
 from .modules.virtualmedia import VirtualMediaModule
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -76,6 +79,9 @@ class KaytusClient:
         self.bios         = BiosModule(self)
         self.firmware     = FirmwareModule(self)
         self.hardware     = HardwareModule(self)
+        self.drives       = DrivesModule(self)
+        self.smtp         = SmtpModule(self)
+        self.events       = EventsModule(self)
         self.virtualmedia = VirtualMediaModule(self)
 
     # ── Public HTTP helpers ───────────────────────────────

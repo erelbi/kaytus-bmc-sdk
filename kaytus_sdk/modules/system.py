@@ -214,6 +214,78 @@ class SystemModule:
             {"Oem": {"Public": {"SmartCooling": {"CPUTarget": target_c}}}},
         )
 
+    # ── Watchdog ─────────────────────────────────────────
+
+    def watchdog_info(self) -> dict:
+        """Return host watchdog timer configuration."""
+        return self._c.get(_SYSTEM).get("HostWatchdogTimer", {})
+
+    def set_watchdog(
+        self,
+        *,
+        enabled: bool = True,
+        timeout_action: str = "ResetSystem",
+        warning_action: str = "None",
+        interval_ms: int = 300000,
+    ) -> dict:
+        """
+        Configure host watchdog timer.
+        timeout_action: None | ResetSystem | PowerCycle | PowerDown | OEM
+        warning_action: None | DiagnosticInterrupt | MessagingInterrupt | ...
+        interval_ms   : watchdog timeout in milliseconds (default 300 s)
+        """
+        return self._c.patch(_SYSTEM, {
+            "HostWatchdogTimer": {
+                "FunctionEnabled": enabled,
+                "TimeoutAction":   timeout_action,
+                "WarningAction":   warning_action,
+                "Oem": {"Public": {"WatchdogTimerInterval": interval_ms}},
+            }
+        })
+
+    # ── BMC management ────────────────────────────────────
+
+    def bmc_reset(self) -> dict:
+        """Restart the BMC firmware (does not affect the host)."""
+        return self._c.post(
+            "/redfish/v1/Managers/1/Actions/Manager.Reset",
+            {"ResetType": "ForceRestart"},
+        )
+
+    def bmc_reset_to_defaults(self) -> dict:
+        """Reset BMC configuration to factory defaults."""
+        return self._c.post(
+            "/redfish/v1/Managers/1/Actions/Manager.ResetToDefaults",
+            {"ResetType": "ResetAll"},
+        )
+
+    def bmc_time(self) -> str:
+        """Return current BMC date/time string."""
+        return self._c.get("/redfish/v1/Managers/1").get("DateTime", "")
+
+    def post_codes(self, limit: int = 20) -> list[dict]:
+        """Return recent BIOS POST codes from the system log."""
+        data = self._c.get(
+            "/redfish/v1/Systems/1/LogServices/PostCodes/Entries"
+        )
+        entries = data.get("Members", [])
+        return entries[:limit]
+
+    def collect_onekeylog(self) -> dict:
+        """Trigger one-key log collection. Poll onekeylog_status() for progress."""
+        return self._c.post(
+            "/redfish/v1/Managers/1/LogServices/Actions/Oem/Public/CollectAllLog"
+        )
+
+    def onekeylog_status(self) -> dict:
+        """Return one-key log collection progress."""
+        d = self._c.get("/redfish/v1/Managers/1/Onekeylog")
+        return {
+            "state":            d.get("TaskState"),
+            "percent_complete": d.get("PercentComplete"),
+            "download_uri":     d.get("AdditionalDataURI"),
+        }
+
     # ── Power ─────────────────────────────────────────────
 
     def power(self) -> dict:
